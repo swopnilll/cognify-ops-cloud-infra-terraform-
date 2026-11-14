@@ -8,3 +8,14 @@ variable "aws_profile" {
   type        = string
   default     = "swop"
 }
+
+variable "ssh_public_key" {
+  description = "Contents of your SSH public key, e.g. ~/.ssh/id_ed25519.pub."
+  type        = string
+}
+
+variable "ssh_allowed_cidrs" {
+  description = "CIDRs allowed to SSH to the server, e.g. [\"203.0.113.7/32\"]. Find yours with: curl -s https://checkip.amazonaws.com"
+  type        = list(string)
+  default     = []
+}

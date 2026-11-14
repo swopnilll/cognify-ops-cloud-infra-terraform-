@@ -24,3 +24,8 @@ crash.log
 # Ignore any generated or temporary files
 .DS_Store
 Thumbs.db
+
+# Server secrets
+.env
+.env.*
+!.env.example

@@ -363,16 +363,17 @@ def choosing_the_range():
 
 def target_design():
     d = Diagram("target-design", 1200, 640,
-                "Target design: one EC2 instance running Docker Compose in a public subnet, with SQS, IAM, a budget alert and S3 for Terraform state")
-    d.node("User", 75, 246, ["User"], size=48)
-    d.node("Internet", 75, 356, ["OpenAI API"], size=48)
+                "Design: a React frontend on Vercel, and one EC2 instance in a public subnet running the API, the embedding worker and Postgres, with SQS, an IAM role and S3 for Terraform state")
+    d.node("User", 75, 110, ["User"], size=48)
+    d.node("GenericApplication", 75, 246, ["Vercel", "React frontend"], size=48, lsize=13)
+    d.node("Internet", 75, 376, ["OpenAI API"], size=48, lsize=13)
 
     d.group(150, 20, 1030, 600, "AWS Cloud", icon="AWSCloudlogo", isize=40, lsize=17)
     d.group(190, 80, 640, 510, "cognify-prod-vpc", icon="VirtualprivatecloudVPC", color=PURPLE,
             right="10.30.0.0/16")
     d.group(260, 135, 540, 330, "public-a", icon="Publicsubnet", color=GREEN, fill=GREEN_BG,
             right="10.30.0.0/24")
-    d.group(290, 185, 480, 255, "EC2 server: t4g.small, Docker Compose", icon="AmazonEC2",
+    d.group(290, 185, 480, 255, "EC2 server: t4g.micro, Docker Compose", icon="AmazonEC2",
             color=ORANGE, fill="#fff", lsize=15)
 
     def container(x, y, name, note):
@@ -381,9 +382,8 @@ def target_design():
         d.text(x + 56, y + 31, name, size=15, weight=700)
         d.text(x + 56, y + 50, note, size=12, fill=MUTED)
 
-    container(315, 235, "web", "Caddy + React build")
-    container(555, 235, "api", "Express")
-    container(315, 345, "embedding", "queue worker")
+    container(315, 235, "api", "Express, port 80")
+    container(555, 235, "embedding", "queue worker")
     container(555, 345, "db", "Postgres 17 + pgvector")
 
     for x, name, cidr, public in ((260, "public-b", "10.30.1.0/24", True),
@@ -404,26 +404,256 @@ def target_design():
     d.text(190, 327, "gateway", size=12, anchor="middle", weight=600)
 
     d.node("AmazonSimpleQueueService", 1035, 140, ["Amazon SQS", "embedding-jobs + DLQ"])
-    d.node("AWSIdentityandAccessManagement", 975, 310, ["IAM role", "queue access,", "no stored keys"], size=56, lsize=13)
-    d.node("AWSBudgets", 1095, 310, ["AWS Budgets", "email alert"], size=56, lsize=13)
+    d.node("AWSIdentityAccessManagementRole", 1035, 300, ["IAM role", "queue access,", "no stored keys"], size=56, lsize=13)
     d.node("AmazonSimpleStorageService", 1035, 470, ["Amazon S3", "Terraform state"], size=56, lsize=13)
 
+    d.arrow([(75, 200), (75, 242)])
     d.arrow([(101, 270), (164, 270)])
     d.arrow([(216, 270), (315, 270)])
-    d.arrow([(505, 270), (555, 270)])
+    d.arrow([(460, 305), (460, 380), (555, 380)])
+    d.arrow([(380, 305), (380, 455), (930, 455), (930, 165), (1003, 165)])
+    d.arrow([(1003, 185), (900, 185), (900, 270), (745, 270)])
     d.arrow([(650, 305), (650, 345)])
-    d.arrow([(745, 255), (870, 255), (870, 165), (1003, 165)])
-    d.arrow([(1003, 185), (895, 185), (895, 452), (410, 452), (410, 415)])
-    d.arrow([(505, 380), (555, 380)])
-    d.arrow([(315, 380), (101, 380)], dash="6 4")
+    d.arrow([(290, 400), (101, 400)], dash="6 4")
 
-    d.badge(1, 132, 248)
-    d.badge(2, 238, 248)
-    d.badge(3, 530, 248)
-    d.badge(4, 674, 325)
-    d.badge(5, 870, 210)
-    d.badge(6, 895, 330)
-    d.badge(7, 238, 358)
+    d.badge(1, 98, 221)
+    d.badge(2, 132, 248)
+    d.badge(3, 484, 342)
+    d.badge(4, 650, 455)
+    d.badge(5, 900, 228)
+    d.badge(6, 674, 325)
+    d.badge(7, 240, 400)
+    d.save()
+
+
+# ---------------------------------------------------------------------------
+# 02 – Internet access
+# ---------------------------------------------------------------------------
+
+def internet_access():
+    d = Diagram("02-internet-access", 1200, 560,
+                "The internet gateway and the two route tables: public subnets have a route to the internet, private subnets do not")
+    d.node("Internet", 70, 150, ["Internet"], size=48)
+    d.group(150, 20, 1030, 520, "cognify-prod-vpc", icon="VirtualprivatecloudVPC", color=PURPLE,
+            right="10.30.0.0/16")
+
+    def subnet(y, name, cidr, public):
+        color, bg = (GREEN, GREEN_BG) if public else (TEAL, TEAL_BG)
+        d.group(240, y, 300, 84, name, icon="Publicsubnet" if public else "Privatesubnet",
+                color=color, fill=bg)
+        d.text(390, y + 62, cidr, size=15, weight=700, anchor="middle", mono=True)
+
+    subnet(80, "public-a", "10.30.0.0/24", True)
+    subnet(180, "public-b", "10.30.1.0/24", True)
+    subnet(330, "private-a", "10.30.10.0/24", False)
+    subnet(430, "private-b", "10.30.11.0/24", False)
+
+    def table(x, y, title, sub, rows, color):
+        h = 62 + 30 * len(rows) + 14
+        d.rect(x, y, 470, h, fill="#fff", stroke=color)
+        d.icon("AmazonRoute53RouteTable", x + 10, y + 8, 30)
+        d.text(x + 50, y + 22, title, size=15, weight=700)
+        d.text(x + 50, y + 39, sub, size=12, fill=MUTED)
+        d.rect(x + 14, y + 52, 442, 26, fill=GREY_BG, stroke=None)
+        d.text(x + 24, y + 70, "Destination", size=12, weight=700)
+        d.text(x + 200, y + 70, "Target", size=12, weight=700)
+        for i, (dest, target, strong) in enumerate(rows):
+            yy = y + 100 + i * 30
+            d.text(x + 24, yy, dest, size=14, mono=True, weight=700 if strong else 400)
+            d.text(x + 200, yy, target, size=14, weight=700 if strong else 400,
+                   fill=INK if strong is not None else MUTED, italic=strong is None)
+        return h
+
+    table(660, 80, "cognify-prod-public-rt", "used by public-a and public-b", [
+        ("10.30.0.0/16", "local (inside the VPC)", False),
+        ("0.0.0.0/0", "internet gateway", True),
+    ], GREEN)
+    table(660, 330, "Main route table", "AWS default, used by private-a and private-b", [
+        ("10.30.0.0/16", "local (inside the VPC)", False),
+        ("(nothing else)", "no way in or out", None),
+    ], TEAL)
+
+    # Internet gateway on the VPC border.
+    d.rect(126, 150, 48, 48, fill="#fff", stroke=None)
+    d.icon("AmazonVPCInternetGateway", 126, 150, 48)
+    d.rect(118, 202, 64, 34, fill="#fff", stroke=None)
+    d.text(150, 215, "Internet", size=12, anchor="middle", weight=600)
+    d.text(150, 230, "gateway", size=12, anchor="middle", weight=600)
+
+    d.arrow([(96, 174), (124, 174)])
+    d.arrow([(176, 174), (210, 174), (210, 122), (240, 122)])
+    d.arrow([(210, 174), (210, 222), (240, 222)])
+    for y in (122, 222):
+        d.line(540, y, 600, y, stroke=GREEN, dash="5 4")
+    d.line(600, 122, 600, 222, stroke=GREEN, dash="5 4")
+    d.arrow([(600, 150), (660, 150)], color=GREEN, dash="5 4")
+    for y in (372, 472):
+        d.line(540, y, 600, y, stroke=TEAL, dash="5 4")
+    d.line(600, 372, 600, 472, stroke=TEAL, dash="5 4")
+    d.arrow([(600, 400), (660, 400)], color=TEAL, dash="5 4")
+
+    d.badge(1, 150, 132)
+    d.badge(2, 1060, 198)
+    d.badge(3, 600, 104)
+    d.badge(4, 600, 354)
+    d.save()
+
+
+# ---------------------------------------------------------------------------
+# 03 – The server
+# ---------------------------------------------------------------------------
+
+SG_RED = "#DD344C"
+OK_GREEN = "#1D8102"
+
+
+def server_anatomy():
+    d = Diagram("03-server", 1200, 640,
+                "The EC2 server: in public-a behind a security group, with an Elastic IP, an encrypted root disk, an SSH key pair and an IAM role")
+    d.node("Internet", 60, 280, ["Internet"], size=48)
+    d.group(130, 20, 740, 600, "cognify-prod-vpc", icon="VirtualprivatecloudVPC", color=PURPLE,
+            right="10.30.0.0/16")
+    d.group(210, 75, 630, 520, "public-a", icon="Publicsubnet", color=GREEN, fill=GREEN_BG,
+            right="10.30.0.0/24")
+    d.rect(240, 125, 570, 450, fill="#fff", stroke=SG_RED, sw=2)
+    d.text(254, 147, "Security group: cognify-prod-server", size=14, weight=600, fill=SG_RED)
+    d.group(270, 165, 510, 300, "EC2 instance: t4g.micro, Ubuntu 24.04 LTS (arm64)",
+            icon="AmazonEC2", color=ORANGE, fill="#fff", lsize=14)
+
+    for x, name, note in ((290, "api", "Express, port 80"), (450, "embedding", "queue worker"),
+                          (610, "db", "Postgres 17")):
+        d.rect(x, 215, 150, 60, fill="#fff", stroke=INK, sw=1.5, rx=4)
+        d.icon("AmazonElasticContainerServiceContainer1", x + 8, y := 229, 32)
+        d.text(x + 48, 240, name, size=14, weight=700)
+        d.text(x + 48, 258, note, size=11, fill=MUTED)
+    d.text(525, 298, "Docker Compose", size=12, anchor="middle", fill=MUTED, italic=True)
+
+    d.icon("AmazonElasticBlockStoreVolumegp3", 290, 330, 52)
+    d.text(352, 348, "Root disk", size=14, weight=700)
+    d.text(352, 366, "16 GB gp3, encrypted", size=12, fill=MUTED)
+    d.text(352, 382, "OS, images, database", size=12, fill=MUTED)
+
+    d.icon("AWSIdentityAccessManagementLongTermSecurityCredential", 545, 330, 52)
+    d.text(607, 348, "SSH key pair", size=14, weight=700)
+    d.text(607, 366, "public half on the server,", size=12, fill=MUTED)
+    d.text(607, 382, "private half on my laptop", size=12, fill=MUTED)
+
+    d.text(290, 440, "IMDSv2 only · private IP in 10.30.0.0/24", size=12, fill=MUTED, italic=True)
+
+    d.icon("AmazonEC2ElasticIPAddress", 290, 492, 52)
+    d.text(352, 512, "Elastic IP", size=14, weight=700)
+    d.text(352, 530, "a fixed public address that survives stop/start", size=12, fill=MUTED)
+
+    # Internet gateway on the VPC border.
+    d.rect(106, 280, 48, 48, fill="#fff", stroke=None)
+    d.icon("AmazonVPCInternetGateway", 106, 280, 48)
+    d.arrow([(86, 304), (104, 304)])
+    d.arrow([(156, 304), (270, 304)])
+
+    d.node("AWSIdentityAccessManagementRole", 1040, 90, ["IAM role", "cognify-prod-server"], size=56, lsize=13)
+    d.node("AmazonSimpleQueueService", 1040, 270, ["Amazon SQS", "embedding-jobs"], size=56, lsize=13)
+    d.node("AWSSystemsManager", 1040, 450, ["Session Manager", "a shell without SSH"], size=56, lsize=13)
+
+    d.arrow([(1010, 118), (700, 118), (700, 165)], dash="6 4")
+    d.text(900, 108, "instance profile", size=12, fill=MUTED, anchor="middle")
+    d.arrow([(780, 298), (1010, 298)])
+    d.arrow([(1010, 478), (910, 478), (910, 420), (780, 420)], dash="6 4")
+
+    d.badge(1, 600, 91)
+    d.badge(2, 272, 518)
+    d.badge(3, 520, 142)
+    d.badge(4, 780, 180)
+    d.badge(5, 272, 356)
+    d.badge(6, 527, 356)
+    d.badge(7, 970, 118)
+    d.save()
+
+
+def security_group():
+    d = Diagram("03-security-group", 1100, 540,
+                "The server's security group: HTTP and HTTPS from anyone, SSH from one address, everything else blocked, all outbound allowed")
+    d.rect(600, 30, 470, 440, fill="#fff", stroke=SG_RED, sw=2)
+    d.text(614, 54, "Security group: cognify-prod-server", size=15, weight=600, fill=SG_RED)
+    d.group(770, 80, 270, 360, "EC2 server", icon="AmazonEC2", color=ORANGE, fill="#fff", lsize=15)
+    d.lines(905, 200, ["api", "listens on port 80"], size=14, anchor="middle", fill=MUTED)
+    d.lines(905, 262, ["sshd", "listens on port 22"], size=14, anchor="middle", fill=MUTED)
+    d.lines(905, 324, ["Postgres 5432: Docker", "network only, not published"], size=13, anchor="middle", fill=MUTED)
+
+    rows = [
+        (100, "Users", "Anyone on the internet", "0.0.0.0/0", "TCP 80 · HTTP", True),
+        (160, "Users", "Anyone on the internet", "0.0.0.0/0", "TCP 443 · HTTPS", True),
+        (220, "Client", "My laptop", "one address, /32", "TCP 22 · SSH", True),
+        (290, "Users", "Anyone else", "0.0.0.0/0", "TCP 22 · SSH", False),
+        (350, "Users", "Anyone", "0.0.0.0/0", "any other port", False),
+    ]
+    for y, icon, who, src, port, allowed in rows:
+        d.icon(icon, 40, y - 20, 40)
+        d.text(92, y - 2, who, size=15, weight=600)
+        d.text(92, y + 16, src, size=12, fill=MUTED, mono=True)
+        color = OK_GREEN if allowed else RED
+        if allowed:
+            d.arrow([(300, y), (770, y)], color=color, sw=2.5)
+        else:
+            d.arrow([(300, y), (588, y)], color=color, sw=2.5, dash="7 5")
+            d.out.append(f'<path d="M591,{y - 9} l18,18 m0,-18 l-18,18" stroke="{RED}" stroke-width="4" fill="none"/>')
+        d.rect(385, y - 28, 150, 22, fill="#fff", stroke=None)
+        d.text(460, y - 12, port, size=13, weight=700, anchor="middle", fill=color, mono=True)
+
+    y = 410
+    d.icon("Internet", 40, y - 20, 40)
+    d.text(92, y - 2, "Anywhere", size=15, weight=600)
+    d.text(92, y + 16, "apt, Docker Hub, SQS, OpenAI", size=12, fill=MUTED)
+    d.arrow([(770, y), (300, y)], color=OK_GREEN, sw=2.5)
+    d.rect(385, y - 28, 150, 22, fill="#fff", stroke=None)
+    d.text(460, y - 12, "outbound: all", size=13, weight=700, anchor="middle", fill=OK_GREEN, mono=True)
+
+    d.text(40, 505, "A security group has only allow rules: anything without a rule is dropped. It is stateful, so the reply",
+           size=14, fill=MUTED, italic=True)
+    d.text(40, 524, "to an allowed request is always let through, in either direction.", size=14, fill=MUTED, italic=True)
+    d.badge(1, 340, 100)
+    d.badge(1, 340, 160)
+    d.badge(2, 340, 220)
+    d.badge(3, 340, 290)
+    d.badge(3, 340, 350)
+    d.badge(4, 730, 410)
+    d.save()
+
+
+def instance_role():
+    d = Diagram("03-instance-role", 1100, 450,
+                "How a container gets AWS credentials from the instance role, with no access keys stored on the server")
+    d.group(30, 30, 560, 330, "EC2 server", icon="AmazonEC2", color=ORANGE, fill="#fff", lsize=15)
+    d.rect(60, 110, 190, 76, fill="#fff", stroke=INK, sw=1.5, rx=4)
+    d.icon("AmazonElasticContainerServiceContainer1", 70, 130, 36)
+    d.text(116, 144, "api container", size=14, weight=700)
+    d.text(116, 163, "AWS SDK", size=12, fill=MUTED)
+    d.rect(360, 110, 200, 76, fill=GREY_BG, stroke=INK, sw=1.5, rx=4)
+    d.text(460, 141, "Instance metadata", size=14, weight=700, anchor="middle")
+    d.text(460, 161, "169.254.169.254", size=13, anchor="middle", mono=True, fill=MUTED)
+    d.lines(60, 300, ["No access keys in .env, in the image or on the disk.",
+                      "Hop limit 2: container → host → metadata service."], size=13, fill=MUTED, italic=True)
+
+    d.node("AWSIdentityAccessManagementRole", 760, 60, ["IAM role", "cognify-prod-server"], size=56, lsize=13)
+    d.node("AmazonSimpleQueueService", 960, 200, ["Amazon SQS", "embedding-jobs"], size=64, lsize=13)
+    d.icon("AWSIdentityAccessManagementTemporarySecurityCredential", 608, 146, 44)
+    d.text(630, 208, "temporary", size=12, anchor="middle", fill=MUTED)
+    d.text(630, 223, "credentials", size=12, anchor="middle", fill=MUTED)
+
+    d.arrow([(250, 135), (360, 135)])
+    d.arrow([(732, 100), (700, 100), (700, 135), (560, 135)], dash="6 4")
+    d.arrow([(360, 165), (250, 165)])
+    d.arrow([(155, 186), (155, 232), (928, 232)])
+
+    d.rect(700, 330, 380, 96, fill=GREEN_BG, stroke=GREEN, rx=4)
+    d.text(716, 354, "The role's policy allows only", size=13, weight=700)
+    d.lines(716, 375, ["sqs:SendMessage, ReceiveMessage,", "DeleteMessage, GetQueueAttributes",
+                       "on the embedding-jobs queue"], size=12, mono=True, gap=16)
+    d.line(960, 312, 960, 330, stroke=GREEN)
+
+    d.badge(1, 305, 118)
+    d.badge(2, 610, 100)
+    d.badge(3, 305, 182)
+    d.badge(4, 520, 232)
     d.save()
 
 
@@ -434,3 +664,7 @@ if __name__ == "__main__":
     reserved_addresses()
     choosing_the_range()
     target_design()
+    internet_access()
+    server_anatomy()
+    security_group()
+    instance_role()

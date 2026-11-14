@@ -56,3 +56,43 @@ resource "aws_subnet" "private_b" {
     Name = "${local.name_prefix}-private-b"
   }
 }
+
+# ----------------------------------------------------------- internet access
+# Notes: notes/network/02-internet-access.md
+
+# The door between the VPC and the internet. One per VPC, free.
+resource "aws_internet_gateway" "this" {
+  vpc_id = aws_vpc.this.id
+
+  tags = {
+    Name = "${local.name_prefix}-igw"
+  }
+}
+
+# Public subnets use this route table. Private subnets stay on the VPC's main
+# route table, which only has the local route, so they have no way out.
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.this.id
+
+  tags = {
+    Name = "${local.name_prefix}-public-rt"
+  }
+}
+
+# "Anything that is not inside the VPC goes to the internet gateway."
+# This one route is what makes a subnet public.
+resource "aws_route" "public_internet" {
+  route_table_id         = aws_route_table.public.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.this.id
+}
+
+resource "aws_route_table_association" "public_a" {
+  subnet_id      = aws_subnet.public_a.id
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "public_b" {
+  subnet_id      = aws_subnet.public_b.id
+  route_table_id = aws_route_table.public.id
+}

@@ -8,7 +8,7 @@ Rules that must not be broken:
 
 - The default AWS CLI profile on this machine is a **work account**. Never create or change
   Cognify resources with it. Use the `swop` profile (the owner's personal account, 588301174695).
-  Nothing has been applied to AWS yet.
+  The infrastructure is live there: check `terraform plan` before changing anything.
 - Commit as `swopnilll` / `swopnilacharya@gmail.com` and push straight to `main`. Do not
   create feature branches or pull requests unless asked.
 - Never commit `.env`, `.env.prod` or `terraform.tfvars`.

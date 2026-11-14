@@ -19,6 +19,10 @@ bottom of the file, and run the script.
 | [01-reading-an-address.svg](01-reading-an-address.svg) | [01 – CIDR plan](../notes/network/01-cidr-plan.md) |
 | [01-address-space.svg](01-address-space.svg) | [01 – CIDR plan](../notes/network/01-cidr-plan.md) |
 | [01-reserved-addresses.svg](01-reserved-addresses.svg) | [01 – CIDR plan](../notes/network/01-cidr-plan.md) |
+| [02-internet-access.svg](02-internet-access.svg) | [02 – Internet access](../notes/network/02-internet-access.md) |
+| [03-server.svg](03-server.svg) | [README](../Readme.md), [The EC2 server](../notes/compute/01-server.md) |
+| [03-security-group.svg](03-security-group.svg) | [README](../Readme.md), [The EC2 server](../notes/compute/01-server.md) |
+| [03-instance-role.svg](03-instance-role.svg) | [README](../Readme.md), [The EC2 server](../notes/compute/01-server.md) |
 
 ## Icons
 

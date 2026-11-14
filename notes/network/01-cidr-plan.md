@@ -6,7 +6,7 @@ The address plan for the Cognify VPC. It is decided first because a VPC's
 primary CIDR and a subnet's CIDR can't be changed after creation: getting it
 wrong means destroying and rebuilding everything inside.
 
-Status: **in Terraform (`modules/network`), planned but not applied.**
+Status: **applied.** Code: [`modules/network`](../../modules/network).
 
 ---
 
@@ -110,13 +110,7 @@ has a route to an internet gateway, and there's no internet gateway or route
 table so far. Until then all four subnets use the VPC's main route table, which
 only has the local route (10.30.0.0/16 → local).
 
-## 5. Next steps (one change at a time)
+## 5. Next
 
-1. `terraform apply`. The plan shows 5 resources: 1 VPC and 4 subnets.
-2. Remote state: `bootstrap/state` (S3 bucket, versioning, lock file).
-3. Internet gateway.
-4. Public route table with 0.0.0.0/0 → internet gateway, associated with
-   public-a and public-b.
-5. Security group for the server.
-6. Then the server itself, SQS, IAM and the budget alert. The earlier
-   single-file version of these is in git history: `git show ea75655 --stat`.
+[02 – Internet access](02-internet-access.md): what makes public-a and public-b
+actually public.

@@ -12,11 +12,12 @@ AWS setup, and what is left to do.
 |---|---|
 | Code | All four repos are on `main` and pushed to GitHub (owner `swopnilll`). |
 | Local stack | Works end to end with Docker Compose, except the AI features, which need a real OpenAI key. |
-| AWS | **Nothing has been created yet.** The Terraform is being rebuilt one step at a time (section 7). So far: the VPC and subnets, validated but never applied. |
+| AWS | **Live** in the personal account (CLI profile `swop`): VPC, SQS queue and one EC2 server running the API, the embedding worker and Postgres. The API answers on plain HTTP at the server's Elastic IP (`terraform output api_url`). |
 | `deploy/` folder | Exists only on the owner's laptop. It is not in any git repo yet (see section 9). |
 
-**Next step:** apply the VPC and subnets, then carry on through the steps in section 7.
-The personal AWS account exists: 588301174695, CLI profile `swop`.
+**Next steps:** put the frontend on Vercel, give the API HTTPS (the browser blocks an HTTPS
+page from calling an HTTP API), set a real `OPENAI_API_KEY` in `server/.env.prod`, add
+backups and a budget alert.
 
 ## 2. What the project is
 
@@ -158,36 +159,27 @@ docker compose --profile local up -d --build
 | `SQS_ENDPOINT`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | Local only. Leave empty on EC2 so the instance role is used. |
 | `SITE_ADDRESS` | `:80` for plain HTTP on any address; a domain name for automatic HTTPS. |
 
-## 7. The new AWS infrastructure
+## 7. The AWS infrastructure
 
-**Being rebuilt step by step.** The first version was a single file, `environments/lean/main.tf`.
-It was removed on 14 November 2026 (never applied) and is in git history at commit `ea75655`.
-The repo now has a root `main.tf` plus `modules/`, with a note per step under `notes/`.
+Applied on 14 November 2026. The `Readme.md` and the notes under `notes/` explain every
+part in detail; this is the short version.
 
-| Step | State |
-|---|---|
-| CIDR plan, VPC and 4 subnets (`modules/network`, `notes/network/01-cidr-plan.md`) | Written, not applied |
-| Remote state, internet gateway, routes, security group, server, SQS, IAM, budget | Not started |
+The first version was a single file, `environments/lean/main.tf` (never applied, git history
+at commit `ea75655`). The repo now has a root `main.tf` plus `modules/`.
 
-The rest of this section describes the target design. Only the rows marked above exist in code.
-
-Decision: the cheapest setup that still runs everything. One EC2 instance, no NAT gateway,
-no load balancer, no RDS.
-
-### What Terraform creates
+### What exists
 
 | Resource | Details |
 |---|---|
-| VPC | `10.30.0.0/16`, two public and two private /24 subnets (the server uses public-a), internet gateway, route table |
-| Security group | 80 and 443 from anywhere; 22 from one address (`ssh_allowed_cidr`) |
-| EC2 instance | `t4g.small` (ARM, 2 vCPU, 2 GB), Ubuntu 24.04, 30 GB encrypted gp3 disk |
+| State | S3 bucket created by `bootstrap/state`; keys `bootstrap/state/` and `prod/` |
+| VPC | `10.30.0.0/16`, two public and two private /24 subnets, internet gateway, public route table (`modules/network`) |
+| SQS | `embedding-jobs` with a dead-letter queue, 3 attempts (`modules/queue`) |
+| EC2 instance | `t4g.micro` (ARM, 2 vCPU, 1 GB), Ubuntu 24.04, 16 GB encrypted gp3 disk, in public-a, CPU credits `standard` (`modules/server`) |
 | Elastic IP | Fixed public address |
-| IAM role | Instance role with send/receive/delete on the queue, plus Session Manager access |
-| SQS | `embedding-jobs` queue with a dead-letter queue (3 attempts) |
-| Budget | Monthly cost budget with email alerts at 80% actual and 100% forecast |
+| Security group | 80 and 443 from anywhere; 22 from the addresses in `ssh_allowed_cidrs` |
+| IAM role | Send/receive/delete on the queue, plus Session Manager |
 
-`user_data.sh` runs on first boot: adds 2 GB of swap, installs Docker with the Compose and
-Buildx plugins, and creates `/opt/cognify`.
+Not built: budget alert, backups, HTTPS, any frontend hosting on AWS.
 
 Details worth knowing:
 - The instance metadata hop limit is 2 so containers can pick up the instance role.
@@ -195,40 +187,32 @@ Details worth knowing:
   replaces the server (the database lives on its disk).
 - The provider has `allowed_account_ids`, so Terraform refuses to run against any account
   other than the one named in `terraform.tfvars`.
-- State is local (`terraform.tfstate`, git-ignored). There is no remote backend.
+- SSH is open to one IP address. If the owner's IP changes, update `ssh_allowed_cidrs` in
+  `terraform.tfvars` and apply.
 
 ### Cost
 
-About US$22 a month: roughly $15 for the instance, $3 for the disk and $4 for the public
-IPv4 address. SQS is free at this volume. These are approximate Sydney on-demand prices and
-should be checked in the AWS Pricing Calculator. New AWS accounts receive sign-up credits
-that should cover the first months.
+About US$13 a month: roughly $7.70 for the instance, $1.50 for the disk and $3.65 for the
+public IPv4 address. Approximate Sydney on-demand prices.
 
 ### Deploying
 
 ```bash
-# 1. The CLI profile for the personal account already exists: swop
-aws sts get-caller-identity --profile swop      # expect account 588301174695
-
-# 2. Infrastructure
 cd cognify-ops-cloud-infra-terraform-
-cp terraform.tfvars.example terraform.tfvars     # fill in
-terraform init
-terraform apply
-
-# 3. Application
-cd ../deploy
-cp .env.example .env.prod                         # fill in; SQS_QUEUE_URL from the Terraform output
-./deploy.sh <public_ip> [path-to-ssh-key]
+terraform apply                 # infrastructure
+scripts/deploy-api.sh           # application
 ```
 
-`deploy.sh` copies the three app repos and the `deploy` folder to `/opt/cognify` on the
-server with rsync, installs `.env.prod` as `.env`, and runs `docker compose up -d --build`.
-Wait a couple of minutes after `terraform apply` before the first deploy so the first-boot
-script can finish installing Docker.
+`scripts/deploy-api.sh` builds the `cognify-api` and `cognify-embedding` images on the laptop
+(the server has 1 GB of memory and never builds), sends them over SSH with
+`docker save | docker load`, copies `server/docker-compose.yml` and `server/.env.prod` to
+`/opt/cognify`, and runs `docker compose up -d`. `server/.env.prod` is git-ignored and holds
+the database password, JWT secret and OpenAI key (currently the placeholder `changeme`, so the
+AI features fail).
 
-The app is on plain HTTP at the Elastic IP until a domain points at it. Then set
-`SITE_ADDRESS` to the domain and redeploy; Caddy obtains the certificate itself.
+The server runs `api` (published on port 80), `embedding` and `db`. There is no `web`/Caddy
+container on the server: the frontend is to be hosted on Vercel. The sibling `deploy/` folder
+is now only used for running the stack locally (section 6).
 
 ### Older Terraform
 
