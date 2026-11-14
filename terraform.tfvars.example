@@ -1,0 +1,3 @@
+# Copy to terraform.tfvars (git-ignored) and fill in.
+
+aws_account_id = "123456789012" # the personal Cognify account, not the work one
