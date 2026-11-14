@@ -31,8 +31,8 @@ Each row is one change, applied and checked before the next one starts.
 | 04 | SQS queue and dead-letter queue | [The EC2 server, section 9](notes/compute/01-server.md#9-the-queue) | [modules/queue](modules/queue) | Applied |
 | 05 | EC2 server: security group, IAM role, key pair, disk, Elastic IP | [The EC2 server](notes/compute/01-server.md) | [modules/server](modules/server) | Applied |
 | 06 | Deploy the API, embedding worker and Postgres | [Deploying the API](notes/compute/02-deploying-the-api.md) | [scripts](scripts), [server](server) | Working |
-| 07 | Frontend on Vercel | – | – | Next |
-| 08 | HTTPS for the API | – | – | To do |
+| 07 | Frontend on Vercel, with `/api/*` rewritten to the server | – | [vercel.json](https://github.com/swopnilll/cognify-ops-fe/blob/main/vercel.json) | Working: [cognify-ops-fe.vercel.app](https://cognify-ops-fe.vercel.app) |
+| 08 | HTTPS between Vercel and the server (needs a domain) | – | – | To do |
 | 09 | Database backups | – | – | To do |
 | 10 | Budget alert and monitoring | – | – | To do |
 
@@ -69,9 +69,10 @@ instance for the backend, and the frontend on Vercel's free tier.
 
 ![Design: a React frontend on Vercel, and one EC2 instance in a public subnet running the API, the embedding worker and Postgres, with SQS, an IAM role and S3 for Terraform state](diagrams/target-design.svg)
 
-1. The user loads the React app from Vercel. *(Not set up yet.)*
-2. The app's `/api` calls go through the internet gateway to the `api`
-   container on the server.
+1. The user loads the React app from Vercel, over HTTPS.
+2. The app calls `/api` on the same Vercel address. Vercel forwards those
+   requests through the internet gateway to the `api` container, so the
+   browser never makes a plain-HTTP call.
 3. `api` reads and writes Postgres.
 4. When a project or task is created, `api` publishes a job to SQS.
 5. `embedding` long-polls the queue and picks the job up.
@@ -232,7 +233,7 @@ AI assistant that answers questions from the project's own data (RAG).
 |------|------------|---------|
 | [cognify-ops-api](https://github.com/swopnilll/cognify-ops-api) | REST API (Express, Prisma, PostgreSQL) | The EC2 server |
 | [embedding-microservice](https://github.com/swopnilll/embedding-microservice) | Worker that builds the knowledge base | The EC2 server |
-| [cognify-ops-fe](https://github.com/swopnilll/cognify-ops-fe) | React frontend | Vercel (planned) |
+| [cognify-ops-fe](https://github.com/swopnilll/cognify-ops-fe) | React frontend | [Vercel](https://cognify-ops-fe.vercel.app) |
 
 ## Repo layout
 

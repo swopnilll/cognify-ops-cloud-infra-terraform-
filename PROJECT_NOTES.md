@@ -15,8 +15,11 @@ AWS setup, and what is left to do.
 | AWS | **Live** in the personal account (CLI profile `swop`): VPC, SQS queue and one EC2 server running the API, the embedding worker and Postgres. The API answers on plain HTTP at the server's Elastic IP (`terraform output api_url`). |
 | `deploy/` folder | Exists only on the owner's laptop. It is not in any git repo yet (see section 9). |
 
-**Next steps:** put the frontend on Vercel, give the API HTTPS (the browser blocks an HTTPS
-page from calling an HTTP API), set a real `OPENAI_API_KEY` in `server/.env.prod`, add
+The frontend is live at https://cognify-ops-fe.vercel.app. `vercel.json` in `cognify-ops-fe`
+rewrites `/api/*` to the server's Elastic IP, so the browser only talks HTTPS to Vercel; if
+the Elastic IP changes, update it there.
+
+**Next steps:** set a real `OPENAI_API_KEY` in `server/.env.prod`, add
 backups and a budget alert.
 
 ## 2. What the project is
