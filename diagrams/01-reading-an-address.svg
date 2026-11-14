@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 470" width="1000" height="470" role="img" aria-label="How to read the address 10.30.10.57: VPC 10.30, subnet 10, host 57">
+<title>How to read the address 10.30.10.57: VPC 10.30, subnet 10, host 57</title>
+<rect width="1000" height="470" fill="#fff"/>
+<rect x="170" y="30" width="150" height="90" rx="6" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="2"/>
+<text x="245" y="93" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="50" font-weight="700" text-anchor="middle" fill="#232F3E">10</text>
+<rect x="350" y="30" width="150" height="90" rx="6" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="2"/>
+<text x="425" y="93" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="50" font-weight="700" text-anchor="middle" fill="#232F3E">30</text>
+<rect x="530" y="30" width="150" height="90" rx="6" fill="#E6F6F7" stroke="#00A4A6" stroke-width="2"/>
+<text x="605" y="93" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="50" font-weight="700" text-anchor="middle" fill="#232F3E">10</text>
+<rect x="710" y="30" width="150" height="90" rx="6" fill="#F2F3F3" stroke="#5F6B7A" stroke-width="2"/>
+<text x="785" y="93" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="50" font-weight="700" text-anchor="middle" fill="#232F3E">57</text>
+<text x="335" y="100" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="50" font-weight="700" text-anchor="middle" fill="#232F3E">.</text>
+<text x="515" y="100" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="50" font-weight="700" text-anchor="middle" fill="#232F3E">.</text>
+<text x="695" y="100" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="50" font-weight="700" text-anchor="middle" fill="#232F3E">.</text>
+<path d="M170,130 v8 H500 v-8 M335.0,138 v8" fill="none" stroke="#8C4FFF" stroke-width="2"/>
+<text x="335" y="170" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" font-weight="700" text-anchor="middle" fill="#232F3E">the VPC: 10.30.0.0/16</text>
+<text x="335" y="192" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="middle" fill="#5F6B7A">the same for every address</text>
+<text x="335" y="211" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="middle" fill="#5F6B7A">in this VPC</text>
+<path d="M530,130 v8 H680 v-8 M605.0,138 v8" fill="none" stroke="#00A4A6" stroke-width="2"/>
+<text x="605" y="170" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" font-weight="700" text-anchor="middle" fill="#232F3E">subnet 10</text>
+<text x="605" y="192" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="middle" fill="#5F6B7A">10–19 = private tier</text>
+<text x="605" y="211" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="middle" fill="#5F6B7A">first in the tier = AZ a</text>
+<path d="M710,130 v8 H860 v-8 M785.0,138 v8" fill="none" stroke="#5F6B7A" stroke-width="2"/>
+<text x="785" y="170" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" font-weight="700" text-anchor="middle" fill="#232F3E">host 57</text>
+<text x="785" y="192" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="middle" fill="#5F6B7A">one of the 251 usable</text>
+<text x="785" y="211" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="middle" fill="#5F6B7A">addresses in the subnet</text>
+<rect x="148" y="300" width="22" height="30" rx="0" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="1"/>
+<text x="159.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="170" y="300" width="22" height="30" rx="0" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="1"/>
+<text x="181.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="192" y="300" width="22" height="30" rx="0" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="1"/>
+<text x="203.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="214" y="300" width="22" height="30" rx="0" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="1"/>
+<text x="225.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="236" y="300" width="22" height="30" rx="0" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="1"/>
+<text x="247.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">1</text>
+<rect x="258" y="300" width="22" height="30" rx="0" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="1"/>
+<text x="269.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="280" y="300" width="22" height="30" rx="0" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="1"/>
+<text x="291.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">1</text>
+<rect x="302" y="300" width="22" height="30" rx="0" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="1"/>
+<text x="313.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="324" y="300" width="22" height="30" rx="0" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="1"/>
+<text x="335.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="346" y="300" width="22" height="30" rx="0" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="1"/>
+<text x="357.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="368" y="300" width="22" height="30" rx="0" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="1"/>
+<text x="379.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="390" y="300" width="22" height="30" rx="0" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="1"/>
+<text x="401.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">1</text>
+<rect x="412" y="300" width="22" height="30" rx="0" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="1"/>
+<text x="423.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">1</text>
+<rect x="434" y="300" width="22" height="30" rx="0" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="1"/>
+<text x="445.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">1</text>
+<rect x="456" y="300" width="22" height="30" rx="0" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="1"/>
+<text x="467.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">1</text>
+<rect x="478" y="300" width="22" height="30" rx="0" fill="#F2EBFF" stroke="#8C4FFF" stroke-width="1"/>
+<text x="489.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="500" y="300" width="22" height="30" rx="0" fill="#E6F6F7" stroke="#00A4A6" stroke-width="1"/>
+<text x="511.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="522" y="300" width="22" height="30" rx="0" fill="#E6F6F7" stroke="#00A4A6" stroke-width="1"/>
+<text x="533.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="544" y="300" width="22" height="30" rx="0" fill="#E6F6F7" stroke="#00A4A6" stroke-width="1"/>
+<text x="555.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="566" y="300" width="22" height="30" rx="0" fill="#E6F6F7" stroke="#00A4A6" stroke-width="1"/>
+<text x="577.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="588" y="300" width="22" height="30" rx="0" fill="#E6F6F7" stroke="#00A4A6" stroke-width="1"/>
+<text x="599.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">1</text>
+<rect x="610" y="300" width="22" height="30" rx="0" fill="#E6F6F7" stroke="#00A4A6" stroke-width="1"/>
+<text x="621.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="632" y="300" width="22" height="30" rx="0" fill="#E6F6F7" stroke="#00A4A6" stroke-width="1"/>
+<text x="643.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">1</text>
+<rect x="654" y="300" width="22" height="30" rx="0" fill="#E6F6F7" stroke="#00A4A6" stroke-width="1"/>
+<text x="665.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="676" y="300" width="22" height="30" rx="0" fill="#F2F3F3" stroke="#5F6B7A" stroke-width="1"/>
+<text x="687.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="698" y="300" width="22" height="30" rx="0" fill="#F2F3F3" stroke="#5F6B7A" stroke-width="1"/>
+<text x="709.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="720" y="300" width="22" height="30" rx="0" fill="#F2F3F3" stroke="#5F6B7A" stroke-width="1"/>
+<text x="731.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">1</text>
+<rect x="742" y="300" width="22" height="30" rx="0" fill="#F2F3F3" stroke="#5F6B7A" stroke-width="1"/>
+<text x="753.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">1</text>
+<rect x="764" y="300" width="22" height="30" rx="0" fill="#F2F3F3" stroke="#5F6B7A" stroke-width="1"/>
+<text x="775.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">1</text>
+<rect x="786" y="300" width="22" height="30" rx="0" fill="#F2F3F3" stroke="#5F6B7A" stroke-width="1"/>
+<text x="797.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="808" y="300" width="22" height="30" rx="0" fill="#F2F3F3" stroke="#5F6B7A" stroke-width="1"/>
+<text x="819.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">0</text>
+<rect x="830" y="300" width="22" height="30" rx="0" fill="#F2F3F3" stroke="#5F6B7A" stroke-width="1"/>
+<text x="841.0" y="320" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="13" font-weight="400" text-anchor="middle" fill="#232F3E">1</text>
+<text x="136" y="320" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="end" fill="#5F6B7A">in bits</text>
+<line x1="500" y1="278" x2="500" y2="338" stroke="#232F3E" stroke-width="2"/>
+<text x="500" y="272" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="15" font-weight="700" text-anchor="middle" fill="#232F3E">/16</text>
+<line x1="676" y1="278" x2="676" y2="338" stroke="#232F3E" stroke-width="2"/>
+<text x="676" y="272" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="15" font-weight="700" text-anchor="middle" fill="#232F3E">/24</text>
+<path d="M148,340 v8 H500 v-8 M324.0,348 v8" fill="none" stroke="#8C4FFF" stroke-width="2"/>
+<text x="324" y="378" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="middle" fill="#232F3E">16 bits fixed by the VPC</text>
+<path d="M500,340 v8 H676 v-8 M588.0,348 v8" fill="none" stroke="#00A4A6" stroke-width="2"/>
+<text x="588" y="378" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="middle" fill="#232F3E">8 bits: which subnet</text>
+<text x="588" y="397" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#5F6B7A">256 possible /24s</text>
+<path d="M676,340 v8 H852 v-8 M764.0,348 v8" fill="none" stroke="#5F6B7A" stroke-width="2"/>
+<text x="764" y="378" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="middle" fill="#232F3E">8 bits: which host</text>
+<text x="764" y="397" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#5F6B7A">256 addresses each</text>
+<text x="500" y="440" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="middle" fill="#5F6B7A" font-style="italic">A /24 inside a /16 puts the subnet number in an octet of its own, so it can be read without any maths.</text>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 250" width="1000" height="250" role="img" aria-label="The five addresses AWS reserves in every subnet, shown for 10.30.0.0/24">
+<title>The five addresses AWS reserves in every subnet, shown for 10.30.0.0/24</title>
+<rect width="1000" height="250" fill="#fff"/>
+<text x="40" y="36" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" font-weight="700" text-anchor="start" fill="#232F3E">public-a</text>
+<text x="122" y="36" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="17" font-weight="700" text-anchor="start" fill="#232F3E">10.30.0.0/24</text>
+<text x="262" y="36" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" text-anchor="start" fill="#5F6B7A">256 addresses − 5 reserved by AWS = 251 usable</text>
+<rect x="40" y="70" width="90" height="64" rx="0" fill="#FDF0EC" stroke="#D13212" stroke-width="2"/>
+<text x="85.0" y="110" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="20" font-weight="700" text-anchor="middle" fill="#232F3E">.0</text>
+<text x="85.0" y="156" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#5F6B7A">network</text>
+<text x="85.0" y="174" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#5F6B7A">address</text>
+<rect x="130" y="70" width="90" height="64" rx="0" fill="#FDF0EC" stroke="#D13212" stroke-width="2"/>
+<text x="175.0" y="110" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="20" font-weight="700" text-anchor="middle" fill="#232F3E">.1</text>
+<text x="175.0" y="156" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#5F6B7A">VPC</text>
+<text x="175.0" y="174" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#5F6B7A">router</text>
+<rect x="220" y="70" width="90" height="64" rx="0" fill="#FDF0EC" stroke="#D13212" stroke-width="2"/>
+<text x="265.0" y="110" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="20" font-weight="700" text-anchor="middle" fill="#232F3E">.2</text>
+<text x="265.0" y="156" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#5F6B7A">DNS</text>
+<text x="265.0" y="174" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#5F6B7A">resolver</text>
+<rect x="310" y="70" width="90" height="64" rx="0" fill="#FDF0EC" stroke="#D13212" stroke-width="2"/>
+<text x="355.0" y="110" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="20" font-weight="700" text-anchor="middle" fill="#232F3E">.3</text>
+<text x="355.0" y="156" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#5F6B7A">reserved for</text>
+<text x="355.0" y="174" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#5F6B7A">future use</text>
+<rect x="850" y="70" width="90" height="64" rx="0" fill="#FDF0EC" stroke="#D13212" stroke-width="2"/>
+<text x="895.0" y="110" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="20" font-weight="700" text-anchor="middle" fill="#232F3E">.255</text>
+<text x="895.0" y="156" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#5F6B7A">broadcast</text>
+<text x="895.0" y="174" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#5F6B7A">(unused in a VPC)</text>
+<rect x="400" y="70" width="450" height="64" rx="0" fill="#F2F6E8" stroke="#7AA116" stroke-width="2"/>
+<text x="625" y="110" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="20" font-weight="700" text-anchor="middle" fill="#232F3E">.4  –  .254</text>
+<text x="625" y="156" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#5F6B7A">251 addresses for instances, load balancers, databases</text>
+<text x="40" y="222" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#5F6B7A" font-style="italic">The same five are taken in every subnet of every VPC, whatever its size.</text>
+</svg>

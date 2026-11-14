@@ -1,15 +1,24 @@
 # 01 – CIDR plan
 
+[← Back to the README](../../Readme.md)
+
 The address plan for the Cognify VPC. It is decided first because a VPC's
 primary CIDR and a subnet's CIDR can't be changed after creation: getting it
 wrong means destroying and rebuilding everything inside.
 
-Status: **in Terraform (`modules/network`), planned but not applied.** Account
-588301174695, CLI profile `swop`.
+Status: **in Terraform (`modules/network`), planned but not applied.**
 
 ---
 
 ## 1. The plan
+
+![The Cognify VPC: 10.30.0.0/16 with a public and a private /24 subnet in each of two availability zones](../../diagrams/01-address-plan.svg)
+
+1. **One VPC, 10.30.0.0/16.** 65,536 private addresses. [Why this range](#2-why-these-numbers).
+2. **Public tier.** Subnets numbered 0–9. The server goes in public-a.
+3. **Private tier.** Subnets numbered 10–19. Nothing is built here yet.
+4. **Two availability zones.** Each tier has a subnet in both, so a load
+   balancer or a database can be added later without re-planning.
 
 | Range     | CIDR          | AZ              | Addresses        | For                                  |
 |-----------|---------------|-----------------|------------------|--------------------------------------|
@@ -19,16 +28,25 @@ Status: **in Terraform (`modules/network`), planned but not applied.** Account
 | private-a | 10.30.10.0/24 | ap-southeast-2a | 256 (251 usable) | Empty. Reserved for a database       |
 | private-b | 10.30.11.0/24 | ap-southeast-2b | 256 (251 usable) | Empty. Reserved for a database       |
 
-- **Usable addresses:** AWS keeps 5 in every subnet: `.0` network, `.1` router,
-  `.2` DNS, `.3` reserved, `.255` broadcast.
+- **Usable addresses:** AWS keeps 5 in every subnet (below).
 - **Free space:** 10.30.2.0–10.30.9.255 (8 more public /24s), 10.30.12.0–10.30.19.255
   (8 more private /24s), and everything from 10.30.20.0 up.
 - **IP version:** IPv4 only.
 - **Cost:** a VPC and its subnets are free. Empty subnets cost nothing.
 
+**The five reserved addresses**
+
+![The five addresses AWS reserves in every subnet, shown for 10.30.0.0/24](../../diagrams/01-reserved-addresses.svg)
+
+**What is used and what is free**
+
+![The 256 possible /24 subnets in 10.30.0.0/16: four in use, the rest of each tier reserved, 236 unassigned](../../diagrams/01-address-space.svg)
+
 ## 2. Why these numbers
 
 **VPC: 10.30.0.0/16**
+
+![The three private IPv4 ranges and why the Cognify VPC uses 10.30.0.0/16](../../diagrams/01-choosing-the-range.svg)
 
 - **Private range.** It must come from RFC 1918 space: 10.0.0.0/8,
   172.16.0.0/12 or 192.168.0.0/16.
@@ -38,12 +56,14 @@ Status: **in Terraform (`modules/network`), planned but not applied.** Account
 - **Not 192.168.x.** Home routers use it. It would clash if a VPN from a laptop
   is ever added.
 - **Not 10.0.0.0/16 or 10.20.0.0/16.** 10.0 is what everyone picks, and 10.20 is
-  taken by `flatwhite-prod-vpc` in the other account. Two VPCs can only be
+  already used by a VPC in another account I work in. Two VPCs can only be
   peered if their ranges don't overlap, so each VPC gets its own second octet.
 - **/16.** The largest a VPC can be. Addresses are free, so there's no reason to
   go smaller, and it makes the subnet maths simple (below).
 
 **Subnets: /24, numbered by the third octet**
+
+![How to read the address 10.30.10.57: VPC 10.30, subnet 10, host 57](../../diagrams/01-reading-an-address.svg)
 
 - A /24 inside a /16 means the third octet *is* the subnet number, so an address
   can be read at a glance: `10.30.10.57` is VPC 30, subnet 10, host 57.
@@ -60,7 +80,7 @@ Status: **in Terraform (`modules/network`), planned but not applied.** Account
   subnets in two AZs, and so does an RDS subnet group. Reserving the b-side
   ranges now is free; finding non-clashing ranges later is the annoying part.
 - Nothing is built in public-b or the private subnets. The "no NAT gateway, no
-  load balancer, no RDS" rule in `PROJECT_NOTES.md` still stands.
+  load balancer, no RDS" cost rule (see the [README](../../Readme.md)) still stands.
 
 ## 3. How Terraform computes it
 
