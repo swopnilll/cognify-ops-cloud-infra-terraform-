@@ -19,3 +19,8 @@ variable "ssh_allowed_cidrs" {
   type        = list(string)
   default     = []
 }
+
+variable "budget_email" {
+  description = "Email address for budget alerts."
+  type        = string
+}

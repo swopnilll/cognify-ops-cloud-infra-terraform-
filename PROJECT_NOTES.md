@@ -20,7 +20,7 @@ rewrites `/api/*` to the server's Elastic IP, so the browser only talks HTTPS to
 the Elastic IP changes, update it there.
 
 **Next steps:** set a real `OPENAI_API_KEY` in `server/.env.prod`, add
-backups and a budget alert.
+backups.
 
 ## 2. What the project is
 
@@ -181,8 +181,9 @@ at commit `ea75655`). The repo now has a root `main.tf` plus `modules/`.
 | Elastic IP | Fixed public address |
 | Security group | 80 and 443 from anywhere; 22 from the addresses in `ssh_allowed_cidrs` |
 | IAM role | Send/receive/delete on the queue, plus Session Manager |
+| Budget | `cognify-monthly`, US$20 a month, email at 80% actual and 100% forecast (`modules/budget`) |
 
-Not built: budget alert, backups, HTTPS, any frontend hosting on AWS.
+Not built: backups, HTTPS, any frontend hosting on AWS.
 
 Details worth knowing:
 - The instance metadata hop limit is 2 so containers can pick up the instance role.

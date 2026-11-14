@@ -34,7 +34,8 @@ Each row is one change, applied and checked before the next one starts.
 | 07 | Frontend on Vercel, with `/api/*` rewritten to the server | – | [vercel.json](https://github.com/swopnilll/cognify-ops-fe/blob/main/vercel.json) | Working: [cognify-ops-fe.vercel.app](https://cognify-ops-fe.vercel.app) |
 | 08 | HTTPS between Vercel and the server (needs a domain) | – | – | To do |
 | 09 | Database backups | – | – | To do |
-| 10 | Budget alert and monitoring | – | – | To do |
+| 10 | Budget alert: email at 80% of US$20 spent, or when the forecast passes it | – | [modules/budget](modules/budget) | Applied |
+| 11 | Monitoring and alarms | – | – | To do |
 
 ## Notes
 
@@ -239,7 +240,7 @@ AI assistant that answers questions from the project's own data (RAG).
 
 ```
 main.tf                    Backend, provider, and one module call per building block
-variables.tf               Inputs: account ID, CLI profile, SSH key, SSH source IPs
+variables.tf               Inputs: account ID, CLI profile, SSH key, SSH source IPs, alert email
 outputs.tf                 Server address, API URL, queue URL
 terraform.tfvars.example   Copy to terraform.tfvars (git-ignored)
 bootstrap/
@@ -248,6 +249,7 @@ modules/
   network/                 VPC, subnets, internet gateway, public route table
   queue/                   SQS queue with a dead-letter queue
   server/                  EC2 instance, security group, IAM role, key pair, Elastic IP
+  budget/                  Monthly cost budget with email alerts
 server/
   docker-compose.yml       What runs on the server
   .env.example             Copy to server/.env.prod (git-ignored)

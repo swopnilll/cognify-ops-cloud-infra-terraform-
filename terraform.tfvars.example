@@ -3,3 +3,4 @@
 aws_account_id    = "123456789012" # the personal Cognify account, not the work one
 ssh_public_key    = "ssh-ed25519 AAAA... you@laptop"
 ssh_allowed_cidrs = ["203.0.113.7/32"] # your IP: curl -s https://checkip.amazonaws.com
+budget_email      = "you@example.com"

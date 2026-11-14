@@ -73,3 +73,13 @@ module "server" {
   ssh_allowed_cidrs = var.ssh_allowed_cidrs
   queue_arns        = [module.embedding_queue.arn]
 }
+
+# Emails when the month's bill passes 80% of the limit, or is forecast to
+# exceed it. Normal running cost is about US$13 a month.
+module "budget" {
+  source = "./modules/budget"
+
+  name      = "cognify-monthly"
+  limit_usd = 20
+  email     = var.budget_email
+}
